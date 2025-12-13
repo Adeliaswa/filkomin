@@ -13,7 +13,7 @@ class WhatsAppService
     public function __construct()
     {
         $this->apiEndpoint = env('WHATSAPP_API_ENDPOINT');
-        $this->apiKey = 'iRrheh4Tsjg4EzbNojNT';
+        $this->apiKey = env('WHATSAPP_API_KEY');
     }
 
     public function sendInvitation(Recipient $recipient, string $invitationLink): bool
