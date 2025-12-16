@@ -13,17 +13,18 @@ class Event extends Model
 {
     use HasFactory;
     
-    protected $fillable = [
-        'user_id',
-        'template_id',
-        'title',
-        'event_time',
-        'location',
-        'description',
-        'dresscode',
-        'organizer',
-        'token',
-    ];
+protected $fillable = [
+    'user_id',
+    'template_id',
+    'title',
+    'event_time',
+    'location',
+    'description',
+    'dresscode',
+    'organizer',
+    'token',
+    'status', 
+];
 
     protected static function boot()
     {

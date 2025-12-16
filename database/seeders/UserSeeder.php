@@ -2,28 +2,54 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\User;
-use App\Models\Role;
 use Illuminate\Support\Facades\Hash;
 
 class UserSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
-    public function run(): void
+    public function run()
     {
-        $adminRole = Role::where('name', 'Admin')->first();
-
-        if ($adminRole) {
+        // ================= ADMIN =================
         User::create([
-            'role_id' => $adminRole->id,
-            'name' => 'Administrator Filkom',
-            'email' => 'admin@filkom.ac.id',
+            'name' => 'Phia',
+            'email' => 'amdmin@filkom.ac.id',
             'password' => Hash::make('password'),
+            'role' => 'admin',
         ]);
-    }
+
+        User::create([
+            'name' => 'Ael',
+            'email' => 'admin2@filkom.ac.id',
+            'password' => Hash::make('password'),
+            'role' => 'admin',
+        ]);
+
+        User::create([
+            'name' => 'Yupi',
+            'email' => 'admin3@filkom.ac.id',
+            'password' => Hash::make('password'),
+            'role' => 'admin',
+        ]);
+
+        // ================= EO =================
+        $eos = [
+            'dosen',
+            'dpm',
+            'bem',
+            'poros',
+            'bcc',
+            'kepanitiaan',
+        ];
+
+        foreach ($eos as $eo) {
+            User::create([
+                'name' => strtoupper($eo),
+                'email' => $eo . '@filkom.ac.id',
+                'password' => Hash::make('password'),
+                'role' => 'eo',
+                'type_eo' => $eo,
+            ]);
+        }
     }
 }
