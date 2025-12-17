@@ -15,7 +15,7 @@ return new class extends Migration
 
         Schema::table('recipients', function (Blueprint $table) {
             // Kolom token untuk link personal tamu
-            $table->uuid('token')->unique()->nullable()->after('name'); 
+            // $table->uuid('token')->unique()->nullable()->after('name'); 
         });
     }
 
