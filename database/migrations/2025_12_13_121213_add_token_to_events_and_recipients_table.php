@@ -6,14 +6,14 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-public function up(): void
-{
-    // token column already exists in events and recipients
-}
+    public function up(): void
+    {
+        // Intentionally left blank
+        // Token columns were added in another migration
+    }
 
-public function down(): void
-{
-    //
-}
-
+    public function down(): void
+    {
+        // Intentionally left blank
+    }
 };
