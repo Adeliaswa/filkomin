@@ -7,6 +7,32 @@
 
     <!-- Poppins Font -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<body>
+    <main class="wrap">
+
+        <!-- TOPBAR / NAVBAR -->
+        <div class="topbar">
+            <div class="brand">
+                <img src="/logo.png" alt="FILKOMIN">
+                <span>FILKOMIN</span>
+            </div>
+
+            <div class="nav-actions">
+                <!-- TOMBOL LOGOUT -->
+                <form method="POST" action="{{ route('logout') }}">
+                    @csrf
+                    <button type="submit" class="btn btn-ghost">
+                        Logout
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- PAGE CONTENT -->
+        @yield('content')
+
+    </main>
+</body>
 
     <style>
     :root{

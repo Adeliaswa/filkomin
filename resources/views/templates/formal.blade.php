@@ -14,7 +14,10 @@
         UNDANGAN RESMI
     </h1>
 
-    <p>Yth. Bapak/Ibu <strong>{{ $recipientName }}</strong>,</p>
+    <p>
+        Yth. Bapak/Ibu
+        <strong>{{ $recipientName ?? 'Nama Tamu' }}</strong>,
+    </p>
 
     <p class="mt-4">
         Dengan hormat, kami mengundang Bapak/Ibu untuk menghadiri acara:
@@ -27,15 +30,15 @@
         </tr>
         <tr>
             <td>Waktu</td>
-            <td>: {{ $event->event_time }}</td>
+            <td>: {{ $event->event_time ?? '-' }}</td>
         </tr>
         <tr>
             <td>Tempat</td>
-            <td>: {{ $event->location }}</td>
+            <td>: {{ $event->location ?? '-' }}</td>
         </tr>
         <tr>
             <td>Dresscode</td>
-            <td>: {{ $event->dresscode }}</td>
+            <td>: {{ $event->dresscode ?? '-' }}</td>
         </tr>
     </table>
 
@@ -45,10 +48,13 @@
 
     <p class="mt-10 text-right">
         Hormat kami,<br>
-        {{ $event->organizer }}
+        {{ $event->organizer ?? $event->organizer_name ?? 'Panitia' }}
     </p>
 
-    @include('templates.partials.rsvp')
+    {{-- RSVP hanya muncul kalau sudah final --}}
+    @if(!empty($showRsvp))
+        @include('templates.partials.rsvp')
+    @endif
 
 </div>
 

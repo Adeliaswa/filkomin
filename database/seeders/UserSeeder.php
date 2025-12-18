@@ -11,14 +11,15 @@ class UserSeeder extends Seeder
 {
     public function run(): void
     {
+        // Ambil role
         $adminRole = Role::where('name', 'Admin')->first();
-        $eoRole = Role::where('name', 'EO')->first();
+        $eoRole    = Role::where('name', 'User')->first(); // EO = User
 
         // ================= ADMIN =================
         if ($adminRole) {
             $admins = [
                 ['name' => 'Phia', 'email' => 'admin@filkom.ac.id'],
-                ['name' => 'Ael', 'email' => 'admin2@filkom.ac.id'],
+                ['name' => 'Ael',  'email' => 'admin2@filkom.ac.id'],
                 ['name' => 'Yupi', 'email' => 'admin3@filkom.ac.id'],
             ];
 
@@ -26,15 +27,15 @@ class UserSeeder extends Seeder
                 User::updateOrCreate(
                     ['email' => $admin['email']],
                     [
-                        'name' => $admin['name'],
+                        'name'     => $admin['name'],
                         'password' => Hash::make('password'),
-                        'role_id' => $adminRole->id,
+                        'role_id'  => $adminRole->id,
                     ]
                 );
             }
         }
 
-        // ================= EO =================
+        // ================= EO / USER =================
         if ($eoRole) {
             $eos = [
                 'dosen',
@@ -49,10 +50,10 @@ class UserSeeder extends Seeder
                 User::updateOrCreate(
                     ['email' => $eo . '@filkom.ac.id'],
                     [
-                        'name' => strtoupper($eo),
+                        'name'     => strtoupper($eo),
                         'password' => Hash::make('password'),
-                        'role_id' => $eoRole->id,
-                        'type_eo' => $eo,
+                        'role_id'  => $eoRole->id,
+                        'type_eo'  => $eo,
                     ]
                 );
             }
