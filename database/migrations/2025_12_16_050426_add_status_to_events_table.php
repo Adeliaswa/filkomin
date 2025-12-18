@@ -11,8 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('templates', function (Blueprint $table) {
-            $table->string('path')->nullable()->after('description');
+        Schema::table('events', function (Blueprint $table) {
+            //
         });
     }
 
@@ -21,8 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('templates', function (Blueprint $table) {
-            $table->dropColumn('path');
+        Schema::table('events', function (Blueprint $table) {
+            //
         });
     }
 };

@@ -28,7 +28,19 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect()->intended(route('dashboard', absolute: false));
+        $user = Auth::user();
+
+        // JIKA BUKAN ADMIN → JADI EO
+        if ($user->role !== 'admin') {
+            $user->update(['role' => 'eo']);
+        }
+
+        // REDIRECT SESUAI ROLE
+        if ($user->role === 'admin') {
+            return redirect()->route('admin.dashboard');
+        }
+
+        return redirect()->route('eo.dashboard');
     }
 
     /**
@@ -39,7 +51,6 @@ class AuthenticatedSessionController extends Controller
         Auth::guard('web')->logout();
 
         $request->session()->invalidate();
-
         $request->session()->regenerateToken();
 
         return redirect('/');
