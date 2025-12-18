@@ -17,14 +17,12 @@ class TemplateSeeder extends Seeder
             'title' => 'Default Simple Template',
             'description' => 'Template dasar untuk undangan resmi.',
             'path' => 'templates.default-simple',
-            'blade_view_name' => 'templates.default-simple',
         ]);
 
         Template::create([
             'title' => 'Premium Modern Template',
             'description' => 'Template modern dengan desain minimalis.',
             'path' => 'templates.premium-modern',
-            'blade_view_name' => 'templates.premium-modern',
         ]);
 
         DB::statement('SET FOREIGN_KEY_CHECKS=1;');
