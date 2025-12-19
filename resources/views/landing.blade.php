@@ -3,19 +3,20 @@
 @section('title', 'FILKOMIN Landing Page')
 
 @section('content')
-
 <style>
-/* ===== ROOT ===== */
 :root {
   --primary: #4f79ff;
   --bg: #f4f0e7;
-  --card: #ffffff;
+  --surface: #ffffff;
   --soft: #f7ffec;
-  --dark: #2b2b2b;
+  --dark: #1f1f1f;
   --muted: #666;
+
+  --radius-lg: 28px;
+  --radius-md: 20px;
+  --radius-sm: 14px;
 }
 
-/* ===== GLOBAL ===== */
 html { scroll-behavior: smooth; }
 
 body {
@@ -25,12 +26,12 @@ body {
   color: var(--dark);
 }
 
-/* ===== WRAPPER (INI KUNCI) ===== */
+/* ===== WRAPPER ===== */
 .landing-wrapper {
   max-width: 1100px;
   margin: 28px auto;
   background: var(--soft);
-  border-radius: 28px;
+  border-radius: var(--radius-lg);
   padding-bottom: 28px;
 }
 
@@ -38,7 +39,7 @@ body {
 .topbar {
   margin: 0 24px;
   padding: 14px 24px;
-  background: var(--card);
+  background: var(--surface);
   border-radius: 999px;
   display: flex;
   justify-content: space-between;
@@ -62,12 +63,12 @@ body {
 
 /* ===== BUTTON ===== */
 .btn {
-  padding: 10px 20px;
+  padding: 10px 22px;
   border-radius: 999px;
   font-size: 14px;
   font-weight: 600;
   text-decoration: none;
-  transition: .25s;
+  transition: all .25s ease;
 }
 
 .btn-primary {
@@ -75,7 +76,10 @@ body {
   color: #fff;
 }
 
-.btn-primary:hover { opacity: .9; }
+.btn-primary:hover {
+  transform: translateY(-1px);
+  opacity: .95;
+}
 
 .btn-ghost {
   border: 1.5px solid #ddd;
@@ -112,8 +116,7 @@ body {
 }
 
 /* ===== EMOJI ===== */
-.emoji-row,
-.mini-emoji {
+.emoji-row, .mini-emoji {
   display: flex;
   justify-content: center;
   gap: 12px;
@@ -122,17 +125,17 @@ body {
 
 .emoji-badge {
   font-size: 22px;
-  background: var(--card);
+  background: var(--surface);
   padding: 12px;
-  border-radius: 14px;
+  border-radius: var(--radius-sm);
 }
 
 /* ===== HOW IT WORKS ===== */
 .how {
-  background: #2b2b2b;
+  background: linear-gradient(180deg, #1f1f1f, #252525);
   margin: 0 24px;
-  border-radius: 22px;
-  padding: 48px 32px;
+  border-radius: var(--radius-lg);
+  padding: 56px 36px;
   color: #fff;
 }
 
@@ -149,43 +152,60 @@ body {
 }
 
 .step {
-  background: #3a3a3a;
+  position: relative;
+  background: #2a2a2a;
+  border-radius: var(--radius-md);
+  padding: 36px 28px;
+  text-align: center;
+  transition: transform .25s ease, box-shadow .25s ease;
+}
+
+.step:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 30px rgba(0,0,0,.3);
+}
+
+.step .icon {
+  font-size: 34px;
+  background: rgba(79,121,255,.12);
+  color: var(--primary);
+  width: 64px;
+  height: 64px;
+  margin: 0 auto 18px;
   border-radius: 18px;
-  padding: 22px;
-}
-
-.step .top {
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: center;
 }
 
-.step .title {
-  font-weight: 600;
+.step h3 {
+  font-size: 16px;
+  margin-bottom: 8px;
+  color: #fff;
 }
 
-.step .ext {
-  font-size: 18px;
+.step p {
+  font-size: 14px;
+  color: #bbb;
+  line-height: 1.6;
+}
+
+.step-number {
+  position: absolute;
+  top: 18px;
+  right: 20px;
+  font-size: 14px;
   font-weight: 700;
   color: var(--primary);
 }
 
-.mock {
-  height: 100px;
-  margin-top: 14px;
-  border-radius: 12px;
-  background: #4a4a4a;
-}
-
-/* ===== CTA 2 (BROWN BOX) ===== */
+/* ===== CTA 2 ===== */
 .cta2 {
   margin: 40px 24px;
-  padding: 80px 24px;
+  padding: 90px 24px;
   text-align: center;
-
-  background: #3b2f2f;          /* coklat tua */
-  border-radius: 24px;
-
+  background: var(--dark);
+  border-radius: var(--radius-lg);
   color: #fff;
 }
 
@@ -193,29 +213,23 @@ body {
   font-size: 34px;
   line-height: 1.2;
   margin: 22px 0;
-  color: #fff;
-}
-
-.cta2 .btn-primary {
-  background: var(--primary);
 }
 
 .sub {
   margin-top: 18px;
   display: flex;
   justify-content: center;
-  gap: 18px;
+  gap: 20px;
   font-size: 14px;
-  color: #e0d6d6;              /* teks abu terang */
+  color: #ccc;
 }
-
 
 /* ===== FOOTER ===== */
 .footer {
   margin: 0 24px;
-  padding: 40px;
-  background: #1f1f1f;
-  border-radius: 22px;
+  padding: 44px;
+  background: var(--dark);
+  border-radius: var(--radius-lg);
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
@@ -277,11 +291,7 @@ body {
   </div>
 
   <h1>A smarter<br>way to run<br>FILKOM’s events!</h1>
-
-  <p>
-    An integrated platform designed to support<br>
-    academic and institutional activities at FILKOM
-  </p>
+  <p>An integrated platform designed to support<br>academic and institutional activities at FILKOM</p>
 
   <div class="cta">
     <a href="#how-it-works" class="btn btn-ghost">Learn More</a>
@@ -294,27 +304,24 @@ body {
 
   <div class="how-grid">
     <article class="step">
-      <div class="top">
-        <div class="title">Create & Publish the Event</div>
-        <div class="ext">1</div>
-      </div>
-      <div class="mock"></div>
+      <div class="icon">📝</div>
+      <h3>Create & Publish Event</h3>
+      <p>Set up event details, schedule, and publish in minutes.</p>
+      <span class="step-number">1</span>
     </article>
 
     <article class="step">
-      <div class="top">
-        <div class="title">Share the Invitation</div>
-        <div class="ext">2</div>
-      </div>
-      <div class="mock"></div>
+      <div class="icon">🔗</div>
+      <h3>Share the Invitation</h3>
+      <p>Distribute links or QR codes to participants easily.</p>
+      <span class="step-number">2</span>
     </article>
 
     <article class="step">
-      <div class="top">
-        <div class="title">Manage Attendance</div>
-        <div class="ext">3</div>
-      </div>
-      <div class="mock"></div>
+      <div class="icon">📊</div>
+      <h3>Manage Attendance</h3>
+      <p>Track attendance and export reports instantly.</p>
+      <span class="step-number">3</span>
     </article>
   </div>
 </section>
@@ -327,7 +334,6 @@ body {
   </div>
 
   <h2>Run Your<br>Academic Events<br>Digitally Today</h2>
-
   <a href="{{ route('register') }}" class="btn btn-primary">Start Here</a>
 
   <div class="sub">
@@ -356,5 +362,4 @@ body {
 </footer>
 
 </div>
-
 @endsection
