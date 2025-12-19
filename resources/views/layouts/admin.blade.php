@@ -42,59 +42,54 @@
         <div>
             <p class="px-4 mb-2 text-xs uppercase tracking-wider opacity-60">Pages</p>
 
-            <!-- EVENT APPROVAL -->
-            <div 
-                x-data="{ open: {{ request()->routeIs('admin.events.approval') ? 'true' : 'false' }} }"
-                class="space-y-1"
-            >
-                <button 
-                    @click="open = !open"
-                    class="w-full flex justify-between items-center px-4 py-2 rounded-lg font-medium
-                    transition-all duration-300 ease-in-out
-                    {{ request()->routeIs('admin.events.approval') ? 'bg-white/15' : 'hover:bg-white/10' }}"
-                >
-                    <span>Event Approval</span>
+<!-- EVENT APPROVAL -->
+<div 
+    x-data="{ open: {{ request()->routeIs('admin.events.approval') ? 'true' : 'false' }} }"
+    class="space-y-1"
+>
+    <button 
+        @click="open = !open"
+        class="w-full flex justify-between items-center px-4 py-2 rounded-lg font-medium
+        transition-all duration-300 ease-in-out
+        {{ request()->routeIs('admin.events.approval') ? 'bg-white/15' : 'hover:bg-white/10' }}"
+    >
+        <span>Event Approval</span>
 
-                    <span 
-                        class="transition-transform duration-300 ease-in-out"
-                        :class="open ? 'rotate-90' : ''"
-                    >
-                        ›
-                    </span>
-                </button>
+        <span 
+            class="transition-transform duration-300 ease-in-out"
+            :class="open ? 'rotate-90' : ''"
+        >
+            ›
+        </span>
+    </button>
 
-                <div
-                    x-show="open"
-                    x-collapse.duration.300ms
-                    class="ml-6 space-y-1 text-xs overflow-hidden"
-                >
-                    @php $status = request('status'); @endphp
+    <div
+        x-show="open"
+        x-collapse.duration.300ms
+        class="ml-6 space-y-1 text-xs overflow-hidden"
+    >
+        @php $status = request('status'); @endphp
 
-                    <a href="{{ route('admin.events.approval', 'pending') }}"
-                       class="block px-4 py-1.5 rounded transition-all duration-200
-                       {{ $status === 'pending' ? 'bg-white/20 font-semibold' : 'hover:bg-white/10 hover:translate-x-1' }}">
-                        Pending Approval
-                    </a>
+        <a href="{{ route('admin.events.approval', 'pending') }}"
+           class="block px-4 py-1.5 rounded transition-all duration-200
+           {{ $status === 'pending' ? 'bg-white/20 font-semibold' : 'hover:bg-white/10 hover:translate-x-1' }}">
+            Pending Approval
+        </a>
 
-                    <a href="{{ route('admin.events.approval', 'revision') }}"
-                       class="block px-4 py-1.5 rounded transition-all duration-200
-                       {{ $status === 'revision' ? 'bg-white/20 font-semibold' : 'hover:bg-white/10 hover:translate-x-1' }}">
-                        Needs Revision
-                    </a>
+        <a href="{{ route('admin.events.approval', 'approved') }}"
+           class="block px-4 py-1.5 rounded transition-all duration-200
+           {{ $status === 'approved' ? 'bg-white/20 font-semibold' : 'hover:bg-white/10 hover:translate-x-1' }}">
+            Approved Events
+        </a>
 
-                    <a href="{{ route('admin.events.approval', 'approved') }}"
-                       class="block px-4 py-1.5 rounded transition-all duration-200
-                       {{ $status === 'approved' ? 'bg-white/20 font-semibold' : 'hover:bg-white/10 hover:translate-x-1' }}">
-                        Approved Events
-                    </a>
+        <a href="{{ route('admin.events.approval', 'rejected') }}"
+           class="block px-4 py-1.5 rounded transition-all duration-200
+           {{ $status === 'rejected' ? 'bg-white/20 font-semibold' : 'hover:bg-white/10 hover:translate-x-1' }}">
+            Rejected Events
+        </a>
+    </div>
+</div>
 
-                    <a href="{{ route('admin.events.approval', 'rejected') }}"
-                       class="block px-4 py-1.5 rounded transition-all duration-200
-                       {{ $status === 'rejected' ? 'bg-white/20 font-semibold' : 'hover:bg-white/10 hover:translate-x-1' }}">
-                        Rejected Events
-                    </a>
-                </div>
-            </div>
 
             <!-- TEMPLATES -->
             <a href="{{ route('admin.templates.index') }}"
