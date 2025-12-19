@@ -1,59 +1,261 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+# 📜 **FILKOMIN — Aplikasi Undangan Online Khusus Filkom UB** (Laravel Web App)
 
-## About Laravel
+**FILKOMIN** adalah aplikasi web berbasis Laravel yang dirancang khusus untuk mendukung pengelolaan acara di lingkungan Fakultas Ilmu Komputer Universitas Brawijaya. Aplikasi ini memungkinkan admin dan event organizer membuat undangan secara terstruktur, memilih template undangan, mengatur detail acara seperti waktu, lokasi, dan dresscode, serta mengelola daftar tamu dengan mudah.  
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## **🔑 Demo Login Accounts**
+Untuk memudahkan pengujian, gunakan akun berikut:
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+### **👤 Login sebagai Event Organizer**
+* Email: eo@filkom.ac.id
+* Password: password
+  
+### **🛠️ Login sebagai Admin**
+* Email: admin@filkom.ac.id
+* Password: password
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## **Fitur Utama**
 
-## Learning Laravel
+### 1. **Autentikasi Pengguna**
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+* Fitur **login** dan **registrasi** untuk pengguna dengan validasi form sebagai **admin** atau **event organizer**.
+* Notifikasi sukses atau gagal untuk setiap operasi autentikasi.
+* 🔒Tamu undangan tidak perlu login, cukup mengakses undangan melalui link yang terkirim di WhatsApp
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### 2. **Manajemen Profile**
 
-## Laravel Sponsors
+* **Admin** dan **event organizer** dapat mengelola data prodil masing-masing melalui menu **Profile**.
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+### 3. **Logout**
 
-### Premium Partners
+* Admin dan event organizer dapat **logout** dari sistem melalui menu logout di aplikasi.
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+---
 
-## Contributing
+## **Fitur Untuk Tamu Undangan**
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### 1. **Akses Undangan Digital**
 
-## Code of Conduct
+* Tamu dapat mengakses undangan melalui **link undangan** atau QR Code tanpa perlu login.
+* Informasi yang ditampilkan meliputi detail acara, lokasi, waktu, dan dresscode.
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### 2. **RSVP (Konfirmasi Kehadiran)**
 
-## Security Vulnerabilities
+* Tamu dapat mengonfirmasi kehadiran **(hadir/ tidak hadir)** langsung dari halaman undangan.
+* Data RSVP tersimpan otomatis dan dapat dipantau oleh admin/EO.
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+### 3. **QR Code Check-In**
 
-## License
+* Setiap tamu memiliki **QR Code unik** yang digunakan saat check-in di lokasi acara.
+* QR akan dipindai oleh panitia untuk mencatat kehadiran secara real-time dan mencegah check-in ganda.
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+---
+
+## **Fitur Untuk Event Organizer (EO)**
+
+### 1. **Pengelolaan Konten Event**
+
+* EO bertanggung jawab untuk memastikan seluruh informasi event yang dikelola **akurat, lengkap, dan selalu diperbarui** sebelum dipublikasikan.
+
+### 2. **Pengelolaan Data Event**
+
+* EO dapat **membuat, mengedit, dan menghapus** data event yang mereka selenggarakan langsung melalui sistem.
+* Data event yang dikelola meliputi judul acara, deskripsi, jadwal, lokasi, dresscode, dan informasi pendukung lainnya.
+* Setiap event yang dibuat atau diperbarui oleh EO akan melalui proses validasi dan persetujuan admin sebelum dapat dipublikasikan di website.
+
+---
+
+## **Fitur Untuk Admin (Website Administrator)**
+
+### 1. **Manajemen Dashboard Website**
+
+* Admin mengelola seluruh konten website melalui dashboard, termasuk melakukan peninjauan, pengeditan, dan penghapusan data event.
+* Konten event yang ditampilkan di website berasal dari data yang dikelola oleh EO melalui sistem dan telah melalui proses validasi admin.
+
+### 2. **Manajemen Pengguna dan Akses**
+
+* Admin mengelola akun pengguna, peran, dan hak akses dalam sistem.
+
+### 3. **Publikasi & Monitoring Sistem**
+
+* Admin melakukan proses publikasi event agar dapat diakses oleh tamu undangan.
+* Admin memantau stabilitas sistem, bug, dan error pada website.
+* Admin memastikan seluruh data undangan, RSVP, dan kehadiran tampil dengan benar dan berjalan sesuai fungsinya.
+
+---
+
+## **Teknologi & Arsitektur (ᵕ—ᴗ—)**
+
+* **Laravel Framework** (MVC Architecture)
+* **MySQL/MariaDB** (Relational Database)
+* **Blade Template Engine** untuk tampilan antarmuka pengguna.
+* **Tailwind CSS** untuk styling.
+* **Vite** untuk build tools dan pengolahan aset frontend.
+
+---
+
+## **Instalasi & Setup ( ꩜ ᯅ ꩜;)⁭ ⁭**
+
+Ikuti langkah-langkah berikut untuk menginstal dan menjalankan aplikasi:
+
+Untuk membuat database di **DBeaver** (MySQL), ikuti langkah-langkah berikut:
+
+1. **Install DBeaver**:
+
+   * Jika Anda belum menginstal **DBeaver**, unduh dan install dari [situs resmi DBeaver](https://dbeaver.io/download/).
+
+2. **Buat Koneksi ke MySQL**:
+
+   * Buka DBeaver dan klik pada ikon **New Database Connection** di toolbar.
+   * Pilih **MySQL** (atau **MariaDB**, tergantung pada jenis database yang digunakan) dan klik **Next**.
+   * Masukkan detail koneksi database Anda (hostname, port, username, password, dll.). Untuk lokal, biasanya pengaturan seperti berikut:
+
+     * **Host**: `127.0.0.1`
+     * **Port**: `3306` (default untuk MySQL)
+     * **Username**: `root` (atau username lainnya)
+     * **Password**: (password MySQL Anda)
+
+3. **Buat Database**:
+
+   * Setelah berhasil terkoneksi, klik kanan pada koneksi MySQL Anda di panel kiri dan pilih **SQL Editor**.
+   * Jalankan query berikut untuk membuat database **filkomin**:
+
+     ```sql
+     CREATE DATABASE filkomin;
+     ```
+
+4. **Verifikasi Database**:
+
+   * Pastikan database **filkomin** sudah muncul di panel kiri, di bawah koneksi yang telah dibuat.
+
+
+Setelah database siap, konfigurasikan aplikasi Laravel agar dapat terhubung ke database **filkomin**:
+
+5. **Duplikat File `.env.example` menjadi `.env`**:
+
+   ```bash
+   cp .env.example .env
+   ```
+
+6. **Edit File `.env`**:
+
+   * Buka file `.env` dan sesuaikan pengaturan database sebagai berikut:
+
+     ```env
+     DB_CONNECTION=mysql
+     DB_HOST=
+     DB_PORT=
+     DB_DATABASE=filkomin
+     DB_USERNAME=
+     DB_PASSWORD=
+     ```
+7. **Instalasi Dependencies:**:
+
+   ```bash
+   composer install
+   npm install && npm run build
+   ```
+   
+8. **Generate Application Key**:
+
+   ```bash
+   php artisan key:generate
+   ```
+
+9. **Migrasi Database**:
+
+   * Jalankan migrasi untuk membuat struktur tabel yang diperlukan di database:
+
+     ```bash
+     php artisan migrate:fresh --seed
+     ```
+
+Setelah semua pengaturan selesai, jalankan aplikasi Laravel di server lokal Anda:
+
+```bash
+php artisan serve
+```
+
+Aplikasi dapat diakses melalui [http://127.0.0.1:8000/](http://127.0.0.1:8000/).
+
+---
+
+## **Fitur Pengembangan ᕙ(  •̀ ᗜ •́  )ᕗ**
+
+* Penggunaan **pola MVC** untuk struktur kode yang rapi dan terorganisir.
+* **Blade templating** untuk antarmuka pengguna yang modular.
+* **Tailwind CSS** untuk desain responsif dan modern.
+* Penggunaan **Vite** untuk pengelolaan aset frontend yang efisien.
+
+## **Kontribusi ٩(ˊᗜˋ)و**
+
+Kontribusi sangat terbuka! Silakan ikuti langkah-langkah berikut untuk berkontribusi dalam proyek ini:
+
+1. **Fork repository**: Fork repositori ini ke akun GitHub Anda.
+2. **Buat branch baru**:
+
+   ```bash
+   git checkout -b fitur-checkin-undangan
+   ```
+3. **Buat perubahan**: Lakukan perubahan sesuai dengan fitur atau bug yang ingin Anda selesaikan.
+4. **Commit perubahan**: Gunakan pesan commit yang sesuai dengan format **Conventional Commit**:
+
+   ```bash
+   git commit -m "feat(checkin): tambah fitur qr code"
+   ```
+5. **Push ke repository**:
+
+   ```bash
+   git push origin fitur-checkin-undangan
+   ```
+6. **Buat Pull Request**: Buat pull request di GitHub untuk menggabungkan perubahan ke branch utama.
+
+### **Branching untuk Collaborative Work**
+
+* Gunakan branch terpisah untuk setiap fitur atau perbaikan bug. Nama branch harus mengikuti konvensi:
+
+  * `fitur/<nama-fitur>`
+  * `bugfix/<nama-bug>`
+
+### **Conventional Commit Message**
+
+* Format pesan commit menggunakan format berikut:
+
+  * `feat`: untuk penambahan fitur baru.
+  * `fix`: untuk perbaikan bug.
+  * `docs`: untuk perubahan dokumentasi.
+  * `style`: untuk perubahan yang hanya mengubah styling (misal: format kode).
+  * `refactor`: untuk perubahan kode yang tidak mempengaruhi fitur atau perbaikan bug.
+  * `test`: untuk penambahan atau perubahan pengujian.
+
+### **Pull Request & Merge**
+
+* Setelah selesai membuat pull request, pastikan untuk memeriksa dan memastikan bahwa pull request memenuhi standar kualitas kode yang telah ditetapkan.
+* Review pull request sebelum melakukan merge ke branch utama (`main`).
+
+---
+
+📩 **Kontak Developer**:
+
+**ADELIA SWASTIKA DEWI**
+* Instagram: [@d_do0lphin](https://instagram.com/d_do0lphin)
+* Email: [adeliaswastikadewi@gmail.com](mailto:adeliaswastikadewi@gmail.com)
+* LinkedIn: [linkedin.com/in/adeliaswastika](https://www.linkedin.com/in/adeliaswastika)
+* GitHub: [github.com/Adeliaswa](https://github.com/Adeliaswa)
+
+**DEVI ATIKA PUTRI**
+* Instagram: [@de_phia02](https://instagram.com/de_phia02)
+* Email: [viatika265@gmail.com](mailto:viatika265@gmail.com)
+* LinkedIn: [linkedin.com/in/deviatika265](www.linkedin.com/in/deviatika265)
+* GitHub: [github.com/viatika265](https://github.com/viatika265)
+
+**NADHIFA FITRIYAH WADIATURABBI**
+* Instagram: [@naadhfy](https://instagram.com/naadhfy)
+* Email: [nadhifafitriyaah@gmail.com](mailto:nadhifafitriyaah@gmail.com)
+* LinkedIn: [linkedin.com/in/nadhi-fa](www.linkedin.com/in/nadhi-fa)
+* GiHub: [github.com/nadh-ifa](https://github.com/nadh-ifa)
+
+📄 **Lisensi**:
+Proyek ini dirilis dengan lisensi **Copyright © 2025 by Kelompok 5 PAW TI-A. (๑>؂•̀๑)**
+
+---
