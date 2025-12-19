@@ -3,50 +3,76 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use App\Models\User;
-use App\Models\Template;
-use App\Models\Recipient;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Support\Str;
 
 class Event extends Model
 {
     use HasFactory;
-    
+
     protected $fillable = [
-        'user_id',
-        'template_id',
+        'eo_id',
+
         'title',
-        'event_time',
-        'location',
+        'category',
+        'organizer_name',
+        'organizer_unit',
         'description',
-        'dresscode',
-        'organizer',
-        'token',
+
+        'date',
+        'start_time',
+        'end_time',
+
+        'location_type',
+        'location',
+        'meeting_link',
+
+        'dress_code',
+        'notes',
+
+        'invitation_type',
+
+        'pic_name',
+        'pic_whatsapp',
+        'pic_email',
+        'request_notes',
+
+        'status',
+        'approved_at',
+        'approved_by',
     ];
 
-    protected static function boot()
+    /*
+    |--------------------------------------------------------------------------
+    | RELATIONS
+    |--------------------------------------------------------------------------
+    */
+
+    // EO pembuat event
+    public function eo()
     {
-        parent::boot();
-        static::creating(function ($event) {
-            if (empty($event->token)) {
-                $event->token = Str::uuid()->toString();
-            }
-        });
+        return $this->belongsTo(User::class, 'eo_id');
     }
 
-    public function organizer()
+    // Admin yang approve
+    public function approver()
     {
-        return $this->belongsTo(User::class, 'user_id'); 
+        return $this->belongsTo(User::class, 'approved_by');
     }
 
-    public function template()
+    // Daftar tamu undangan
+    public function guests()
     {
-        return $this->belongsTo(Template::class);
+        return $this->hasMany(EventGuest::class);
     }
 
-    public function recipients()
+    /*
+    |--------------------------------------------------------------------------
+    | HELPERS
+    |--------------------------------------------------------------------------
+    */
+
+    public function isApproved(): bool
     {
-        return $this->hasMany(Recipient::class);
+        return $this->status === 'approved';
     }
 }

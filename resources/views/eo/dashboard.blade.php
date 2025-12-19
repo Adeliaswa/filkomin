@@ -2,133 +2,169 @@
 
 @section('content')
 
-<aside class="sidebar">
-  <div class="title">EO Navigation</div>
+<style>
+  .eo-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 18px;
+  }
 
-  <a href="#" class="nav-link active" data-page="event-list-content" onclick="showPage('event-list-content', this)">
-    <span class="icon"><i class="fas fa-calendar-alt"></i></span> Event List
+  .eo-header h1 {
+    font-size: 26px;
+    font-weight: 700;
+    margin: 0;
+  }
+
+  .eo-filters {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+
+  .eo-filters select,
+  .eo-filters input {
+    padding: 8px 12px;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+    font-size: 13px;
+    background: #fff;
+  }
+
+  .eo-card {
+    background: #fff;
+    border-radius: 18px;
+    padding: 18px;
+    box-shadow: 0 10px 30px rgba(0,0,0,.05);
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  thead {
+    background: #f1ede4;
+  }
+
+  th {
+    font-size: 12px;
+    font-weight: 600;
+    color: #555;
+    padding: 12px;
+    text-align: left;
+  }
+
+  td {
+    padding: 14px 12px;
+    font-size: 14px;
+    border-bottom: 1px solid #eee;
+    vertical-align: middle;
+  }
+
+  .badge {
+    padding: 4px 12px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 600;
+    display: inline-block;
+  }
+
+  .badge-approved { background: #4caf50; color: #fff; }
+  .badge-pending  { background: #ffcc66; color: #333; }
+  .badge-rejected { background: #f44336; color: #fff; }
+  .badge-draft    { background: #9e9e9e; color: #fff; }
+
+  .action-link {
+    color: #9e9e9e;
+    font-weight: 600;
+    font-size: 13px;
+    margin-right: 10px;
+    cursor: not-allowed;
+    text-decoration: none;
+  }
+</style>
+
+<div class="eo-header">
+  <h1>Event Organizer Dashboard</h1>
+
+  <a href="{{ route('eo.events.create') }}" class="btn btn-primary">
+    + Create New Event
   </a>
-  <a href="#" class="nav-link" data-page="create-event-content" onclick="showPage('create-event-content', this)">
-    <span class="icon"><i class="fas fa-plus-circle"></i></span> Create Event
-  </a>
+</div>
 
-  <div id="extra-menu" style="display:none; border-top: 1px solid var(--soft); margin-top: 10px; padding-top: 10px;">
-    <div style="padding-left: 20px; font-size: 10px; color: var(--muted); margin-bottom: 5px;">EVENT TOOLS</div>
-    <a href="#" class="nav-link" data-page="guest-management-content" onclick="showPage('guest-management-content', this)">
-      <span class="icon"><i class="fas fa-users"></i></span> Manage Guests
-    </a>
-    <a href="#" class="nav-link" data-page="send-invitations-content" onclick="showPage('send-invitations-content', this)">
-      <span class="icon"><i class="fas fa-paper-plane"></i></span> Send Invitations
-    </a>
-    <a href="#" class="nav-link" data-page="rsvp-monitoring-content" onclick="showPage('rsvp-monitoring-content', this)">
-      <span class="icon"><i class="fas fa-chart-pie"></i></span> RSVP Monitoring
-    </a>
-  </div>
+<div class="eo-filters">
+  <select disabled>
+    <option>All Status</option>
+  </select>
 
-  <div style="margin-top: auto; padding-top: 20px;">
-    <form method="POST" action="{{ route('logout') }}">
-      @csrf
-      <a href="{{ route('logout') }}" onclick="event.preventDefault(); this.closest('form').submit();" class="nav-link text-danger">
-        <span class="icon"><i class="fas fa-sign-out-alt"></i></span> Logout
-      </a>
-    </form>
-  </div>
-</aside>
+  <input type="text" placeholder="Search event title..." disabled />
+</div>
 
-<section class="dashboard-content">
-  <h1 id="dashboard-title">TEST</h1>
+<div class="eo-card">
+  <table>
+    <thead>
+      <tr>
+        <th>EVENT TITLE</th>
+        <th>DATE</th>
+        <th>CATEGORY</th>
+        <th>STATUS</th>
+        <th>LAST UPDATED</th>
+        <th>ACTIONS</th>
+      </tr>
+    </thead>
 
-  <div id="event-list-content" class="page-content active">
-    <div class="event-list-controls">
-      <div class="left">
-        <input type="text" placeholder="Search event..." id="event-search" onkeyup="filterEvents()">
-      </div>
-      <div class="right">
-        <button class="btn btn-primary" onclick="showPage('create-event-content', document.querySelector('[onclick*=\'create-event-content\']'))">
-          <i class="fas fa-plus"></i> Create New Event
-        </button>
-      </div>
-    </div>
-
-    <table>
-      <thead>
+    <tbody>
+      @forelse ($events as $event)
         <tr>
-          <th>Event Title</th>
-          <th>Date</th>
-          <th>Status</th>
-          <th>Action</th>
-        </tr>
-      </thead>
-      <tbody>
-        @forelse($events as $event)
-        <tr>
-          <td><strong>{{ $event->title ?? $event->name }}</strong></td>
-          <td>{{ \Carbon\Carbon::parse($event->date)->format('d M Y') }}</td>
+          <td><strong>{{ $event->title }}</strong></td>
+
           <td>
-            <span class="badge {{ ($event->status ?? 'Active') == 'Approved' ? 'badge-approved' : 'badge-pending' }}">
-              {{ $event->status ?? 'Active' }}
-            </span>
+            {{ $event->date
+                ? \Carbon\Carbon::parse($event->date)->format('d M Y')
+                : '-' }}
           </td>
+
           <td>
-            <button class="btn btn-secondary" onclick="manageEvent('{{ $event->id }}', '{{ $event->title ?? $event->name }}')">
-              <i class="fas fa-cog"></i> Manage
-            </button>
-            <a href="{{ route('events.show', $event->id) }}" class="btn btn-ghost">
-              <i class="fas fa-eye"></i> View
-            </a>
-            <a href="{{ route('events.export.pdf', $event->id) }}" class="btn btn-ghost text-danger">
-              <i class="fas fa-file-pdf"></i> PDF
-            </a>
+            {{ ucfirst(str_replace('-', ' ', $event->category)) }}
+          </td>
+
+          <td>
+            @switch($event->status)
+              @case('approved')
+                <span class="badge badge-approved">Approved</span>
+                @break
+              @case('pending')
+                <span class="badge badge-pending">Pending</span>
+                @break
+              @case('rejected')
+                <span class="badge badge-rejected">Rejected</span>
+                @break
+              @default
+                <span class="badge badge-draft">Draft</span>
+            @endswitch
+          </td>
+
+          <td>
+            {{ $event->updated_at->format('d M Y H:i') }}
+          </td>
+
+          <td>
+            <span class="action-link">View</span>
+            <span class="action-link">Edit</span>
+            <span class="action-link">Preview</span>
           </td>
         </tr>
-        @empty
+      @empty
         <tr>
-          <td colspan="4" style="text-align:center; padding:40px;">No events found. Start by creating one!</td>
+          <td colspan="6" style="text-align:center;padding:40px;">
+            Belum ada event.
+          </td>
         </tr>
-        @endforelse
-      </tbody>
-    </table>
-  </div>
-
-  <!-- Additional Pages (Create Event, Guest Management, RSVP Monitoring) -->
-
-</section>
-
-<script>
-  let currentEventId = null;
-
-  // Function to switch between pages
-  function showPage(pageId, element) {
-    document.querySelectorAll('.page-content').forEach(p => p.style.display = 'none');
-    document.getElementById(pageId).style.display = 'block';
-
-    if (element) {
-      document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
-      element.classList.add('active');
-    }
-  }
-
-  // Function to manage event
-  function manageEvent(id, title) {
-    currentEventId = id;
-    document.getElementById('extra-menu').style.display = 'block';
-    alert('Event "' + title + '" selected. Event Tools are now active in the sidebar.');
-  }
-
-  // Function to filter events
-  function filterEvents() {
-    let input = document.getElementById('event-search').value.toLowerCase();
-    let rows = document.querySelectorAll('tbody tr');
-    rows.forEach(row => {
-      let text = row.innerText.toLowerCase();
-      row.style.display = text.includes(input) ? '' : 'none';
-    });
-  }
-
-  // Event listener for page load
-  window.onload = function() {
-    showPage('event-list-content');
-  };
-</script>
+      @endforelse
+    </tbody>
+  </table>
+</div>
 
 @endsection

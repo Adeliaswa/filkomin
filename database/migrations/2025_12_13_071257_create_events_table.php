@@ -6,30 +6,46 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('events', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
-            $table->foreignId('template_id')->constrained('templates');
+
+            $table->foreignId('eo_id')->constrained('users')->onDelete('cascade');
 
             $table->string('title');
+            $table->string('category');
+            $table->string('organizer_name');
+            $table->string('organizer_unit');
             $table->text('description');
-            $table->dateTime('event_time');
-            $table->string('location');
-            $table->string('dresscode');
-            $table->string('organizer');
-            
+
+            $table->date('date');
+            $table->time('start_time');
+            $table->time('end_time')->nullable();
+
+            $table->string('location_type');
+            $table->string('location')->nullable();
+            $table->string('meeting_link')->nullable();
+
+            $table->string('dress_code')->nullable();
+            $table->text('notes')->nullable();
+
+            $table->string('invitation_type'); // link / pdf
+
+            $table->string('pic_name');
+            $table->string('pic_whatsapp');
+            $table->string('pic_email')->nullable();
+            $table->text('request_notes')->nullable();
+
+            $table->string('status')->default('draft');
+
+            $table->timestamp('approved_at')->nullable();
+            $table->foreignId('approved_by')->nullable()->constrained('users')->nullOnDelete();
+
             $table->timestamps();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('events');

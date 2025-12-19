@@ -8,25 +8,12 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::table('events', function (Blueprint $table) {
-            // Kolom token untuk link e-vite utama
-            $table->uuid('token')->unique()->nullable()->after('description'); 
-        });
-
-        Schema::table('recipients', function (Blueprint $table) {
-            // Kolom token untuk link personal tamu
-            // $table->uuid('token')->unique()->nullable()->after('name'); 
-        });
+        // Intentionally left blank.
+        // Token columns are already handled in other migrations.
     }
 
     public function down(): void
     {
-        Schema::table('events', function (Blueprint $table) {
-            $table->dropColumn('token');
-        });
-
-        Schema::table('recipients', function (Blueprint $table) {
-            $table->dropColumn('token');
-        });
+        // No rollback needed.
     }
 };
