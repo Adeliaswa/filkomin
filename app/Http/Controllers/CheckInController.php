@@ -2,28 +2,47 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Recipient;
-use Illuminate\Http\Request;
+use App\Models\EventGuest;
 use Carbon\Carbon;
 
 class CheckInController extends Controller
 {
+    /**
+     * Check-in tamu menggunakan attendance_token (QR Code)
+     * URL: /checkin/{token}
+     */
     public function checkin(string $token)
     {
-        $recipient = Recipient::where('token', $token)->first();
+        $guest = EventGuest::where('attendance_token', $token)->first();
 
-        if (!$recipient) {
-            return response()->json(['message' => 'Token Tamu tidak valid.'], 404);
+        // token tidak valid
+        if (!$guest) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Token tamu tidak valid.',
+            ], 404);
         }
 
-        if ($recipient->checkin_time) {
-            $checkinTime = Carbon::parse($recipient->checkin_time)->format('H:i');
-            return response()->json(['message' => 'Tamu ini sudah check-in pada pukul ' . $checkinTime], 200);
+        // sudah check-in
+        if ($guest->attended_at) {
+            return response()->json([
+                'status' => 'already_checked_in',
+                'message' => 'Tamu sudah check-in pada pukul ' .
+                    Carbon::parse($guest->attended_at)->format('H:i'),
+                'guest' => $guest->name,
+            ], 200);
         }
 
-        $recipient->checkin_time = Carbon::now();
-        $recipient->save();
+        // simpan waktu check-in
+        $guest->update([
+            'attended_at' => now(),
+        ]);
 
-        return response()->json(['message' => 'Check-in berhasil! Selamat datang, ' . $recipient->name . '.'], 200);
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Check-in berhasil! Selamat datang, ' . $guest->name . '.',
+            'guest' => $guest->name,
+            'time' => Carbon::now()->format('H:i'),
+        ], 200);
     }
 }

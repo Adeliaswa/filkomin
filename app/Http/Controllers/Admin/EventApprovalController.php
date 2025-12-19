@@ -4,39 +4,56 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Event;
-use Illuminate\Http\Request;
+use App\Services\WhatsAppService;
 
 class EventApprovalController extends Controller
 {
     /**
      * Display event list based on approval status
      */
-public function index($status = 'pending')
-{
-    $allowedStatus = ['pending', 'revision', 'approved', 'rejected'];
+    public function index($status = 'pending')
+    {
+        $allowedStatus = ['pending', 'revision', 'approved', 'rejected'];
 
-    if (!in_array($status, $allowedStatus)) {
-        abort(404);
+        if (!in_array($status, $allowedStatus)) {
+            abort(404);
+        }
+
+        $events = Event::where('status', $status)
+            ->latest()
+            ->paginate(10);
+
+        return view('admin.event-approval.index', compact('events', 'status'));
     }
-
-    $events = Event::where('status', $status)
-        ->latest()
-        ->paginate(10);
-
-    return view('admin.event-approval.index', compact('events', 'status'));
-}
-
 
     /**
      * Approve event
+     * 👉 update status + kirim WhatsApp ke SEMUA GUEST
      */
     public function approve(Event $event)
     {
+        // =========================
+        // UPDATE STATUS EVENT
+        // =========================
         $event->update([
-            'status' => 'approved'
+            'status'      => 'approved',
+            'approved_at' => now(),
+            'approved_by' => auth()->id(),
         ]);
 
-        return back()->with('success', 'Event approved successfully.');
+        // =========================
+        // KIRIM WHATSAPP (FONNTE)
+        // =========================
+        $wa = new WhatsAppService();
+
+        foreach ($event->guests as $guest) {
+            $wa->sendInvitation(
+                $guest,
+                route('einvite.show', $guest->invitation_token)
+            );
+        }
+
+        return back()->with('success', 'Event approved & WhatsApp sent.');
     }
 
     /**

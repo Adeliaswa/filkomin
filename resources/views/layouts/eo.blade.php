@@ -114,17 +114,86 @@
     .dashboard-content {
       padding: 10px;
     }
+
+        /* FOOTER */
+/* Footer Styles */
+    .dashboard-footer {
+      margin-top: auto;
+      padding-top: 30px;
+    }
+
+    .footer-content {
+      background: var(--card);
+      border-radius: var(--radius-lg);
+      padding: 25px 30px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .footer-brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .footer-logo {
+      height: 28px;
+      width: auto;
+    }
+
+    .footer-title {
+      font-weight: 700;
+      font-size: 16px;
+      color: white;
+      letter-spacing: 0.5px;
+    }
+
+    .footer-social {
+      display: flex;
+      gap: 15px;
+    }
+
+    .social-link {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #bdbdbd;
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+
+    .social-link:hover {
+      background: var(--primary);
+      color: white;
+      transform: translateY(-2px);
+    }
+
+    .footer-copy {
+      font-size: 12px;
+      color: #888;
+      text-align: center;
+      width: 100%;
+    }
+
+
   </style>
 </head>
 
 <body>
+
+
   <main class="wrap">
 
     {{-- TOPBAR --}}
     <header class="topbar">
-      <div class="brand">
-        <strong>FILKOMIN</strong>
-      </div>
+
 
       <div class="nav-actions">
         {{-- LOGOUT (POST, WAJIB) --}}
@@ -164,7 +233,30 @@
         @yield('content')
       </section>
 
-    </div>
-  </main>
+    </div> {{-- end main-layout --}}
+
+
+    <footer class="dashboard-footer">
+      <div class="footer-content">
+        <div class="footer-brand">
+          <img
+            src="https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/429fa1fa-304f-4a41-a6d1-c5dfc602e8d2/dl2tro7-b82d4d25-02fa-4843-abfd-244ea4faf4ab.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiIvZi80MjlmYTFmYS0zMDRmLTRhNDEtYTZkMS1jNWRmYzYwMmU4ZDIvZGwydHJvNy1iODJkNGQyNS0wMmZhLTQ4NDMtYWJmZC0yNDRlYTRmYWY0YWIucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.JoGIQfUsi8w8QyK8aY7EjS8Qv5Lcoee0Gz0g_Q7axA0"
+            alt="FILKOMIN" class="footer-logo" referrerpolicy="no-referrer" />
+          <span class="footer-title"></span>
+        </div>
+        <div class="footer-social">
+          <a href="#" class="social-link" title="Instagram"><i class="fab fa-instagram"></i></a>
+          <a href="#" class="social-link" title="Twitter"><i class="fab fa-twitter"></i></a>
+          <a href="#" class="social-link" title="YouTube"><i class="fab fa-youtube"></i></a>
+        </div>
+        <div class="footer-copy">
+          &copy; {{ date('Y') }} FILKOMIN - Event Organizer System. All rights reserved.
+        </div>
+              </div>
+    </footer>
+
+    </main>
+
 </body>
+
 </html>
