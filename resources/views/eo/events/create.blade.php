@@ -275,6 +275,24 @@
   <label>Request Notes to Admin</label>
   <textarea name="request_notes" rows="3"></textarea>
 </div>
+{{-- D. INVITATION DELIVERY --}}
+<div class="section-title">D. Invitation Delivery</div>
+
+<div class="form-group">
+  <label class="form-label">Invitation Type *</label>
+
+  <div class="location-options">
+    <label class="location-card">
+      <input type="radio" name="invitation_type" value="link" required>
+      <span>Link Invitation</span>
+    </label>
+
+    <label class="location-card">
+      <input type="radio" name="invitation_type" value="pdf">
+      <span>PDF Invitation</span>
+    </label>
+  </div>
+</div>
 
 {{-- ACTION --}}
 <div class="form-actions">
