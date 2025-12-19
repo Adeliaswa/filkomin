@@ -1,139 +1,246 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="utf-8">
     <title>{{ $event->title }}</title>
 
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: "Georgia", serif;
+            background: #ffffff;
+            margin: 0;
+            padding: 0;
+        }
+
+        .page {
+            width: 820px;
+            margin: 60px auto;
+            padding: 55px 65px;
+            border: 1px solid #e3e3e3;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            letter-spacing: 2px;
+            margin: 0;
+            font-weight: normal;
+        }
+
+        .header span {
+            display: block;
+            font-size: 13px;
+            letter-spacing: 1px;
+            margin-top: 8px;
+            color: #666;
+        }
+
+        .content {
+            font-size: 15px;
+            line-height: 1.9;
+        }
+
+        .content p {
+            margin: 20px 0;
+        }
+
+        .event-info {
+            margin: 40px 0;
+        }
+
+        .event-info table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .event-info td {
+            padding: 6px 0;
+            vertical-align: top;
+        }
+
+        .label {
+            width: 160px;
+            font-size: 13px;
+            font-weight: bold;
+            color: #444;
+        }
+
+        .colon {
+            width: 12px;
+        }
+
+        .footer {
+            margin-top: 70px;
+        }
+
+        .signature {
+            margin-top: 45px;
+            font-size: 15px;
+            font-weight: bold;
+        }
+
+        .qr {
+            margin-top: 50px;
+            text-align: center;
+        }
+
+        .qr img {
+            width: 170px;
+            height: 170px;
+        }
+
+        .crafted {
+            margin-top: 80px;
+            text-align: center;
+            font-size: 11px;
+            color: #999;
+        }
+
+        @media print {
+            .page {
+                margin: 0;
+                border: none;
+                padding: 55px;
+            }
+        }
+    </style>
 </head>
 
-<body style="
-    margin:0;
-    padding:0;
-    font-family: 'Inter', sans-serif;
-    background: radial-gradient(circle at top, #1a1f2b, #0f1218);
-    color: #e5e7eb;
-">
+<body>
 
-    <div style="
-        max-width: 720px;
-        margin: 70px auto;
-        background: #0f1624;
-        border-radius: 14px;
-        overflow: hidden;
-        box-shadow: 0 30px 60px rgba(0,0,0,0.6);
-        border: 1px solid #1f2937;
-    ">
+<div class="page">
+    <div class="header">
+        <h1>Invitation</h1>
+        <span>You Are Cordially Invited</span>
+    </div>
 
-        <!-- Header -->
-        <div style="
-            padding: 34px 36px;
-            background: linear-gradient(135deg, #111827, #1f2937);
-            border-bottom: 1px solid #273244;
-        ">
-            <p style="
-                margin: 0 0 6px;
-                font-family: 'JetBrains Mono', monospace;
-                font-size: 12px;
-                color: #38bdf8;
-                letter-spacing: 1.5px;
-                text-transform: uppercase;
-            ">
-                // Invitation Preview
-            </p>
+    <div class="content">
 
-            <h2 style="
-                margin: 0;
-                font-size: 28px;
-                font-weight: 600;
-                color: #f9fafb;
-            ">
-                {{ $event->title }}
-            </h2>
-        </div>
+        <p>
+            Dear <strong>{{ $guest->name }}</strong>,
+        </p>
 
-        <!-- Content -->
-        <div style="padding: 40px 46px;">
+        <p>
+            We are delighted to invite you to attend the following event.
+            Your presence would mean a great deal to us.
+        </p>
 
-            <p style="font-size: 15.5px; color:#d1d5db;">
-                Hello,
-            </p>
+        <div class="event-info">
+            <table>
+                <tr>
+                    <td class="label">Event</td>
+                    <td class="colon">:</td>
+                    <td>{{ $event->title }}</td>
+                </tr>
 
-            <p style="font-size: 15.5px; line-height: 1.9; color:#cbd5f5;">
-                We invite you to be part of an event where ideas are shared,
-                discussions evolve, and progress is made — step by step.
-            </p>
+                <tr>
+                    <td class="label">Date</td>
+                    <td class="colon">:</td>
+                    <td>{{ \Carbon\Carbon::parse($event->date)->translatedFormat('l, d F Y') }}</td>
+                </tr>
 
-            <!-- Event Info (Iterative Card) -->
-            <div style="
-                margin: 36px 0;
-                padding: 28px 32px;
-                background: linear-gradient(135deg, #0b1220, #111827);
-                border-radius: 12px;
-                border: 1px solid #1e293b;
-            ">
-                <table style="width:100%; font-size:15px;">
-                    <tr>
-                        <td style="padding: 8px 0; font-family:'JetBrains Mono'; color:#22d3ee;">
-                            step_1: datetime
-                        </td>
-                        <td style="padding: 8px 0; color:#e5e7eb;">
-                            {{ $event->event_time }}
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="padding: 8px 0; font-family:'JetBrains Mono'; color:#22d3ee;">
-                            step_2: location
-                        </td>
-                        <td style="padding: 8px 0; color:#e5e7eb;">
+                <tr>
+                    <td class="label">Time</td>
+                    <td class="colon">:</td>
+                    <td>
+                        {{ $event->start_time }}
+                        @if($event->end_time)
+                            – {{ $event->end_time }}
+                        @endif
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="label">Location</td>
+                    <td class="colon">:</td>
+                    <td>
+                        @if($event->location_type === 'online')
+                            Online ({{ $event->meeting_link }})
+                        @elseif($event->location_type === 'hybrid')
+                            {{ $event->location }} / Online
+                        @else
                             {{ $event->location }}
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="padding: 8px 0; font-family:'JetBrains Mono'; color:#22d3ee;">
-                            step_3: dress_code
-                        </td>
-                        <td style="padding: 8px 0; color:#e5e7eb;">
-                            {{ $event->dresscode }}
-                        </td>
-                    </tr>
-                </table>
-            </div>
+                        @endif
+                    </td>
+                </tr>
 
-            <p style="font-size: 15.5px; line-height: 1.9; color:#d1d5db;">
-                {{ $event->description }}
-            </p>
-
-            <p style="font-size: 15.5px; margin-top: 34px; color:#cbd5f5;">
-                Let’s iterate, collaborate, and move forward together.
-            </p>
-
-            <p style="
-                margin-top: 42px;
-                font-weight: 600;
-                color: #38bdf8;
-                font-size: 15.5px;
-            ">
-                — {{ $event->organizer }}
-            </p>
-
+                @if($event->dress_code)
+                <tr>
+                    <td class="label">Dress Code</td>
+                    <td class="colon">:</td>
+                    <td>{{ $event->dress_code }}</td>
+                </tr>
+                @endif
+            </table>
         </div>
 
-        <!-- Footer -->
-        <div style="
-            text-align: center;
-            font-size: 12px;
-            color: #6b7280;
-            padding: 18px 0 22px;
-            background: #0b1220;
-            border-top: 1px solid #1f2937;
-            font-family: 'JetBrains Mono', monospace;
-        ">
-            crafted.iteratively.by <strong>Filkomin</strong>
+        <p>
+            We look forward to welcoming you and hope you can join us on this occasion.
+        </p>
+
+        <div class="footer">
+            <p>Warm regards,</p>
+
+            <div class="signature">
+                {{ $event->organizer_name }}<br>
+                <small>{{ $event->organizer_unit }}</small>
+            </div>
+        </div>
+
+        {{-- QR CODE --}}
+        <div class="qr">
+            <p><strong>Attendance QR Code</strong></p>
+            <img
+                src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data={{ url('checkin/'.$guest->attendance_token) }}"
+                alt="QR Code"
+            >
+            <p style="font-size:12px;color:#666;">
+                Please show this QR Code upon arrival.
+            </p>
+        </div>
+
+        {{-- RSVP --}}
+        <div style="margin-top:45px;">
+            <form method="POST" action="{{ route('einvite.rsvp', $guest->invitation_token) }}">
+                @csrf
+
+                <p><strong>RSVP</strong></p>
+
+                <select name="status" required>
+                    <option value="">Please select</option>
+                    <option value="Hadir">Will Attend</option>
+                    <option value="Tidak Hadir">Unable to Attend</option>
+                    <option value="Belum Pasti">Tentative</option>
+                </select>
+
+                <br><br>
+
+                <label>Notes (optional)</label><br>
+                <textarea name="notes" rows="3" style="width:100%;"></textarea>
+
+                <br><br>
+
+                <label>Number of Attendees</label><br>
+                <input type="number" name="pax" min="1" value="1">
+
+                <br><br>
+
+                <button type="submit">
+                    Submit RSVP
+                </button>
+            </form>
+        </div>
+
+        <div class="crafted">
+            Crafted with care by <strong>Filkomin</strong>
         </div>
 
     </div>
+</div>
 
 </body>
 </html>

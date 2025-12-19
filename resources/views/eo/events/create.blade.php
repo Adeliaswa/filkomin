@@ -54,31 +54,6 @@
     gap: 16px;
   }
 
-  .radio-group {
-    display: flex;
-    gap: 20px;
-    margin-top: 6px;
-  }
-
-  .template-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-    gap: 14px;
-  }
-
-  .template-card {
-    border: 2px solid #ddd;
-    border-radius: 14px;
-    padding: 16px;
-    text-align: center;
-    cursor: pointer;
-  }
-
-  .template-card.active {
-    border-color: #4f79ff;
-    background: #f4f7ff;
-  }
-
   .form-actions {
     display: flex;
     justify-content: flex-end;
@@ -92,57 +67,50 @@
     border-radius: 999px;
     padding: 10px 20px;
     font-weight: 600;
+    border: none;
+    cursor: pointer;
   }
 
-  .form-label {
-  font-weight: 600;
-  margin-bottom: 6px;
-  display: block;
-}
+  .btn-primary {
+    background: #4f79ff;
+    color: #fff;
+    border-radius: 999px;
+    padding: 10px 20px;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+  }
 
-.location-options {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 12px;
-}
+  .location-options {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+  }
 
-.location-card {
-  border: 2px solid #e5e5e5;
-  border-radius: 14px;
-  padding: 12px 14px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 500;
-  background: #fff;
-  transition: all .2s ease;
-}
+  .location-card {
+    border: 2px solid #e5e5e5;
+    border-radius: 14px;
+    padding: 12px 14px;
+    cursor: pointer;
+    text-align: center;
+    font-weight: 500;
+  }
 
-.location-card input {
-  display: none;
-}
+  .location-card input {
+    display: none;
+  }
 
-.location-card:hover {
-  border-color: #4f79ff;
-}
-
-.location-card input:checked + span {
-  color: #4f79ff;
-  font-weight: 600;
-}
-
-.location-card:has(input:checked) {
-  border-color: #4f79ff;
-  background: #f0f4ff;
-}
-
+  .location-card:has(input:checked) {
+    border-color: #4f79ff;
+    background: #f0f4ff;
+    font-weight: 600;
+  }
 </style>
 
 <h1 class="page-title">Create New Event</h1>
 
 <div class="form-card">
-<form method="POST" action="{{ route('eo.events.store') }}" enctype="multipart/form-data">
+<form method="POST" action="{{ route('eo.events.store') }}">
 @csrf
 
 {{-- A. BASIC INFO --}}
@@ -152,6 +120,7 @@
   <label>Event Title *</label>
   <input type="text" name="title" required>
 </div>
+
 <div class="form-group">
   <label>Event Category *</label>
   <select name="category" required>
@@ -161,8 +130,6 @@
     <option value="speaker">Speaker</option>
   </select>
 </div>
-
-
 
 <div class="form-group">
   <label>Organizer Name *</label>
@@ -181,14 +148,12 @@
   </select>
 </div>
 
-
 <div class="form-group">
   <label>Description *</label>
   <textarea name="description" rows="4" required></textarea>
 </div>
 
-
-{{-- B. SCHEDULE --}}
+{{-- B. SCHEDULE & LOCATION --}}
 <div class="section-title">B. Schedule & Location</div>
 
 <div class="form-group">
@@ -208,37 +173,34 @@
 </div>
 
 <div class="form-group">
-  <label class="form-label">Location Type *</label>
-
+  <label>Location Type *</label>
   <div class="location-options">
     <label class="location-card">
       <input type="radio" name="location_type" value="onsite" required>
-      <span>On-site</span>
+      On-site
     </label>
-
     <label class="location-card">
       <input type="radio" name="location_type" value="online">
-      <span>Online</span>
+      Online
     </label>
-
     <label class="location-card">
       <input type="radio" name="location_type" value="hybrid">
-      <span>Hybrid</span>
+      Hybrid
     </label>
   </div>
 </div>
+
 <div class="form-group" id="physical-location" style="display:none;">
-  <label>Event Location *</label>
-  <input type="text" name="location" placeholder="Gedung G FILKOM / Aula / dll">
+  <label>Event Location</label>
+  <input type="text" name="location">
 </div>
+
 <div class="form-group" id="online-location" style="display:none;">
-  <label>Meeting Link *</label>
-  <input type="url" name="meeting_link" placeholder="https://zoom.us/j/xxxx">
+  <label>Meeting Link</label>
+  <input type="url" name="meeting_link">
 </div>
 
-
-
-{{-- C. INVITATION --}}
+{{-- C. INVITATION DETAILS --}}
 <div class="section-title">C. Invitation Details</div>
 
 <div class="form-group">
@@ -248,10 +210,28 @@
 
 <div class="form-group">
   <label>Additional Notes</label>
-  <textarea name="notes" rows="3"></textarea>
+  <textarea name="notes"></textarea>
 </div>
 
+{{-- D. INVITED GUESTS --}}
+<div class="section-title">D. Invited Guests</div>
 
+<div id="guest-list">
+  <div class="form-row">
+    <div class="form-group">
+      <label>Guest Name *</label>
+      <input type="text" name="guests[0][name]" required>
+    </div>
+    <div class="form-group">
+      <label>WhatsApp *</label>
+      <input type="text" name="guests[0][whatsapp]" required>
+    </div>
+  </div>
+</div>
+
+<button type="button" id="add-guest" class="btn-draft" style="margin-top:10px;">
+  + Add Another Guest
+</button>
 
 {{-- E. CONTACT --}}
 <div class="section-title">E. Contact & Approval</div>
@@ -273,23 +253,21 @@
 
 <div class="form-group">
   <label>Request Notes to Admin</label>
-  <textarea name="request_notes" rows="3"></textarea>
+  <textarea name="request_notes"></textarea>
 </div>
-{{-- D. INVITATION DELIVERY --}}
-<div class="section-title">D. Invitation Delivery</div>
+
+{{-- F. INVITATION DELIVERY --}}
+<div class="section-title">F. Invitation Delivery</div>
 
 <div class="form-group">
-  <label class="form-label">Invitation Type *</label>
-
   <div class="location-options">
     <label class="location-card">
       <input type="radio" name="invitation_type" value="link" required>
-      <span>Link Invitation</span>
+      Link
     </label>
-
     <label class="location-card">
       <input type="radio" name="invitation_type" value="pdf">
-      <span>PDF Invitation</span>
+      PDF
     </label>
   </div>
 </div>
@@ -299,37 +277,40 @@
   <button type="submit" name="status" value="draft" class="btn-draft">
     Save as Draft
   </button>
-  <button type="submit" name="status" value="pending" class="btn btn-primary">
+  <button type="submit" name="status" value="pending" class="btn-primary">
     Submit for Approval
   </button>
 </div>
 
 </form>
-<script>
-  const locationRadios = document.querySelectorAll('input[name="location_type"]');
-  const physicalField = document.getElementById('physical-location');
-  const onlineField = document.getElementById('online-location');
-
-  locationRadios.forEach(radio => {
-    radio.addEventListener('change', function () {
-      if (this.value === 'onsite') {
-        physicalField.style.display = 'block';
-        onlineField.style.display = 'none';
-      }
-
-      if (this.value === 'online') {
-        physicalField.style.display = 'none';
-        onlineField.style.display = 'block';
-      }
-
-      if (this.value === 'hybrid') {
-        physicalField.style.display = 'block';
-        onlineField.style.display = 'block';
-      }
-    });
-  });
-</script>
-
 </div>
+
+<script>
+const radios = document.querySelectorAll('input[name="location_type"]');
+const physical = document.getElementById('physical-location');
+const online = document.getElementById('online-location');
+
+radios.forEach(radio => {
+  radio.addEventListener('change', () => {
+    physical.style.display = ['onsite','hybrid'].includes(radio.value) ? 'block' : 'none';
+    online.style.display = ['online','hybrid'].includes(radio.value) ? 'block' : 'none';
+  });
+});
+
+let guestIndex = 1;
+document.getElementById('add-guest').addEventListener('click', () => {
+  document.getElementById('guest-list').insertAdjacentHTML('beforeend', `
+    <div class="form-row" style="margin-top:12px">
+      <div class="form-group">
+        <input type="text" name="guests[${guestIndex}][name]" placeholder="Guest Name" required>
+      </div>
+      <div class="form-group">
+        <input type="text" name="guests[${guestIndex}][whatsapp]" placeholder="WhatsApp" required>
+      </div>
+    </div>
+  `);
+  guestIndex++;
+});
+</script>
 
 @endsection

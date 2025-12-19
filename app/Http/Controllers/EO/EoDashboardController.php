@@ -10,7 +10,8 @@ class EoDashboardController extends Controller
 {
     public function index()
     {
-        $events = Event::where('user_id', auth()->id())
+        // GANTI user_id ➜ eo_id
+        $events = Event::where('eo_id', auth()->id())
             ->latest()
             ->get();
 

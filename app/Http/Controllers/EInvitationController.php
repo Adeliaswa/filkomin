@@ -2,57 +2,108 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Recipient;
-use App\Models\RsvpResponse;
+use App\Models\EventGuest;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\View;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class EInvitationController extends Controller
 {
     /**
-     * Menampilkan e-vite berdasarkan token.
+     * 📩 MENAMPILKAN UNDANGAN TAMU (WEB)
+     * URL: /i/{token}
      */
     public function show(string $token)
     {
-        $recipient = Recipient::where('token', $token)
-                              ->with('event.template', 'rsvpResponse')
-                              ->firstOrFail(); 
-                              
-        $event = $recipient->event;
-        $templatePath = $event->template->path;
-        
-        if (!View::exists($templatePath)) {
-            $templatePath = 'templates.default-simple'; 
+        $guest = EventGuest::where('invitation_token', $token)
+            ->with('event')
+            ->firstOrFail();
+
+        $event = $guest->event;
+
+        // 🔒 hanya event yang sudah di-approve admin
+        if ($event->status !== 'approved') {
+            abort(403, 'Event belum disetujui admin');
         }
 
-        $recipientName = $recipient->name;
-        
-        return view($templatePath, compact('recipient', 'event', 'recipientName'));
+        // 🎨 tentukan view invitation berdasarkan kategori event
+        $view = match ($event->category) {
+            'formal'       => 'invitation.formal',
+            'semi-formal'  => 'invitation.semi-formal',
+            'speaker'      => 'invitation.speaker',
+            default        => 'invitation.semi-formal',
+        };
+
+        if (!view()->exists($view)) {
+            abort(404, 'Template undangan tidak ditemukan');
+        }
+
+        return view($view, [
+            'event' => $event,
+            'guest' => $guest,
+        ]);
     }
 
     /**
-     * Memproses respon RSVP dari tamu undangan.
+     * 📄 DOWNLOAD / PREVIEW UNDANGAN PDF
+     * URL: /i/{token}/pdf
+     */
+    public function pdf(string $token)
+    {
+        $guest = EventGuest::where('invitation_token', $token)
+            ->with('event')
+            ->firstOrFail();
+
+        $event = $guest->event;
+
+        if ($event->status !== 'approved') {
+            abort(403, 'Event belum disetujui admin');
+        }
+
+        $view = match ($event->category) {
+            'formal'       => 'invitation.formal',
+            'semi-formal'  => 'invitation.semi-formal',
+            'speaker'      => 'invitation.speaker',
+            default        => 'invitation.semi-formal',
+        };
+
+        if (!view()->exists($view)) {
+            abort(404, 'Template undangan tidak ditemukan');
+        }
+
+        $pdf = Pdf::loadView($view, [
+            'event' => $event,
+            'guest' => $guest,
+            'isPdf' => true, // optional flag kalau mau styling khusus pdf
+        ]);
+
+        return $pdf->stream(
+            'Undangan-' . str_replace(' ', '-', $event->title) . '.pdf'
+        );
+    }
+
+    /**
+     * 📝 SIMPAN RSVP TAMU
+     * URL: POST /i/{token}/rsvp
      */
     public function submitRsvp(Request $request, string $token)
     {
-        $recipient = Recipient::where('token', $token)->firstOrFail();
+        $guest = EventGuest::where('invitation_token', $token)
+            ->firstOrFail();
 
-        $validatedData = $request->validate([
+        $validated = $request->validate([
             'status' => 'required|in:Hadir,Tidak Hadir,Belum Pasti',
-            'notes' => 'nullable|string|max:500', 
-            'pax' => 'nullable|integer|min:1',
+            'notes'  => 'nullable|string|max:500',
+            'pax'    => 'nullable|integer|min:1',
         ]);
-        
-        $rsvp = RsvpResponse::updateOrCreate(
-            ['recipient_id' => $recipient->id],
-            [
-                'status' => $validatedData['status'],
-                'notes' => $validatedData['notes'] ?? null,
-                'pax' => $validatedData['pax'] ?? 1,
-            ]
-        );
 
-        return redirect()->route('einvite.show', $token)
-                         ->with('success', 'Terima kasih, respon RSVP Anda berhasil disimpan!');
+        $guest->update([
+            'rsvp_status' => $validated['status'],
+            'rsvp_notes'  => $validated['notes'] ?? null,
+            'rsvp_pax'    => $validated['pax'] ?? 1,
+        ]);
+
+        return redirect()
+            ->route('einvite.show', $token)
+            ->with('success', 'Terima kasih, RSVP Anda berhasil disimpan.');
     }
 }

@@ -3,30 +3,40 @@
 use Illuminate\Support\Facades\Route;
 use App\Models\Event;
 
-// GENERAL
+/*
+|--------------------------------------------------------------------------
+| GENERAL CONTROLLERS
+|--------------------------------------------------------------------------
+*/
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\EventController;
-use App\Http\Controllers\RecipientController;
 use App\Http\Controllers\EInvitationController;
 use App\Http\Controllers\CheckInController;
 
-// EO
+/*
+|--------------------------------------------------------------------------
+| EO CONTROLLERS
+|--------------------------------------------------------------------------
+*/
 use App\Http\Controllers\Eo\EoDashboardController;
 use App\Http\Controllers\Eo\EoEventController;
 
-// ADMIN
+/*
+|--------------------------------------------------------------------------
+| ADMIN CONTROLLERS
+|--------------------------------------------------------------------------
+*/
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\EventApprovalController;
-use App\Http\Controllers\Admin\TemplateController;
 use App\Http\Controllers\Admin\ReportsController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\TemplateController;
 use App\Http\Controllers\Admin\System\SettingsController;
 use App\Http\Controllers\Admin\System\DistributionSettingsController;
 use App\Http\Controllers\Admin\System\ActivityLogsController;
 
 /*
 |--------------------------------------------------------------------------
-| PUBLIC / LANDING
+| LANDING
 |--------------------------------------------------------------------------
 */
 Route::get('/', function () {
@@ -38,7 +48,7 @@ Route::get('/', function () {
 
 /*
 |--------------------------------------------------------------------------
-| DASHBOARD REDIRECT
+| DASHBOARD REDIRECT (SETELAH LOGIN)
 |--------------------------------------------------------------------------
 */
 Route::middleware('auth')->get('/dashboard', function () {
@@ -61,66 +71,30 @@ Route::middleware(['auth', 'role:eo'])
     ->name('eo.')
     ->group(function () {
 
-        // 📋 LIST EVENT / DASHBOARD EO
-        Route::get('/events', [EoDashboardController::class, 'index'])
-            ->name('events.index');
-
-        // alias dashboard
+        // DASHBOARD EO
         Route::get('/dashboard', [EoDashboardController::class, 'index'])
             ->name('dashboard');
 
-        // ➕ FORM CREATE EVENT
+        // LIST EVENT (INI YANG BENAR)
+        Route::get('/events', [EoEventController::class, 'index'])
+            ->name('events.index');
+
+        // CREATE EVENT
         Route::get('/events/create', [EoEventController::class, 'create'])
             ->name('events.create');
 
-        // 💾 SIMPAN EVENT
         Route::post('/events', [EoEventController::class, 'store'])
             ->name('events.store');
 
-        // 🔍 PREVIEW UNDANGAN (BERDASARKAN CATEGORY)
-        Route::get('/events/{event}/preview', function (\App\Models\Event $event) {
-
-            // EO hanya boleh preview event miliknya
-            if ($event->user_id !== auth()->id()) {
+        // PREVIEW EVENT
+        Route::get('/events/{event}/preview', function (Event $event) {
+            if ($event->eo_id !== auth()->id()) {
                 abort(403);
             }
 
-            // event harus punya template
-            if (!$event->template) {
-                abort(404, 'Template not found');
-            }
-
-            return view($event->template->blade_view, [
-                'event'         => $event,
-                'recipientName' => 'Nama Tamu',
-                'showRsvp'      => false, // PREVIEW MODE
-            ]);
+            return view('eo.events.preview', compact('event'));
         })->name('events.preview');
-
     });
-
-/*
-|--------------------------------------------------------------------------
-| AUTHENTICATED CORE
-|--------------------------------------------------------------------------
-*/
-Route::middleware('auth')->group(function () {
-
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-
-    Route::resource('events', EventController::class);
-
-    Route::post('events/{event}/recipients', [RecipientController::class, 'store'])
-        ->name('recipients.store');
-
-    Route::delete('events/{event}/recipients/{recipient}', [RecipientController::class, 'destroy'])
-        ->name('recipients.destroy');
-
-    Route::get('events/{event}/export/pdf', [EventController::class, 'exportRecipientsPdf'])
-        ->name('events.export.pdf');
-});
 
 /*
 |--------------------------------------------------------------------------
@@ -132,9 +106,11 @@ Route::middleware(['auth', 'role:admin'])
     ->name('admin.')
     ->group(function () {
 
+        // DASHBOARD
         Route::get('/dashboard', [DashboardController::class, 'index'])
             ->name('dashboard');
 
+        // EVENT APPROVAL (INI YANG ERROR KEMARIN)
         Route::get('/event-approval/{status?}', [EventApprovalController::class, 'index'])
             ->name('events.approval');
 
@@ -147,6 +123,7 @@ Route::middleware(['auth', 'role:admin'])
         Route::post('/event/{event}/revision', [EventApprovalController::class, 'revision'])
             ->name('events.revision');
 
+        // TEMPLATES
         Route::get('/templates', [TemplateController::class, 'index'])
             ->name('templates.index');
 
@@ -156,24 +133,35 @@ Route::middleware(['auth', 'role:admin'])
         Route::get('/templates/{template}/preview', [TemplateController::class, 'preview'])
             ->name('templates.preview');
 
+        // USERS
         Route::get('/users/admins', [UserController::class, 'admins'])
             ->name('users.admins');
 
         Route::get('/users/event-organizers', [UserController::class, 'eventOrganizers'])
             ->name('users.eos');
 
+        // REPORTS
         Route::prefix('reports')->name('reports.')->group(function () {
-            Route::get('/', [ReportsController::class, 'dashboard'])->name('dashboard');
-            Route::get('/events', [ReportsController::class, 'events'])->name('events');
+            Route::get('/', [ReportsController::class, 'dashboard'])
+                ->name('dashboard');
+
+            Route::get('/events', [ReportsController::class, 'events'])
+                ->name('events');
+
             Route::get('/organizers', [ReportsController::class, 'organizers']);
         });
 
+        // SYSTEM
         Route::prefix('system')->name('system.')->group(function () {
-            Route::get('/settings', [SettingsController::class, 'edit'])->name('settings.edit');
-            Route::post('/settings', [SettingsController::class, 'update'])->name('settings.update');
+            Route::get('/settings', [SettingsController::class, 'edit'])
+                ->name('settings.edit');
+
+            Route::post('/settings', [SettingsController::class, 'update'])
+                ->name('settings.update');
 
             Route::get('/distribution', [DistributionSettingsController::class, 'edit'])
                 ->name('distribution.edit');
+
             Route::post('/distribution', [DistributionSettingsController::class, 'update'])
                 ->name('distribution.update');
 
@@ -184,16 +172,40 @@ Route::middleware(['auth', 'role:admin'])
 
 /*
 |--------------------------------------------------------------------------
-| PUBLIC INVITATION
+| PROFILE
 |--------------------------------------------------------------------------
 */
-Route::get('i/{token}', [EInvitationController::class, 'show'])->name('einvite.show');
-Route::post('i/{token}/rsvp', [EInvitationController::class, 'submitRsvp'])->name('einvite.rsvp');
-Route::get('checkin/{token}', [CheckInController::class, 'checkin'])->name('checkin.show');
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])
+        ->name('profile.edit');
+
+    Route::patch('/profile', [ProfileController::class, 'update'])
+        ->name('profile.update');
+
+    Route::delete('/profile', [ProfileController::class, 'destroy'])
+        ->name('profile.destroy');
+});
 
 /*
 |--------------------------------------------------------------------------
-| AUTH
+| PUBLIC INVITATION
+|--------------------------------------------------------------------------
+*/
+Route::get('i/{token}', [EInvitationController::class, 'show'])
+    ->name('einvite.show');
+
+Route::get('i/{token}/pdf', [EInvitationController::class, 'pdf'])
+    ->name('einvite.pdf');
+
+Route::post('i/{token}/rsvp', [EInvitationController::class, 'submitRsvp'])
+    ->name('einvite.rsvp');
+
+Route::get('checkin/{token}', [CheckInController::class, 'checkin'])
+    ->name('checkin.show');
+
+/*
+|--------------------------------------------------------------------------
+| AUTH (BREEZE)
 |--------------------------------------------------------------------------
 */
 require __DIR__ . '/auth.php';

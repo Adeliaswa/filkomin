@@ -4,60 +4,75 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Support\Str;
 
 class Event extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'user_id',
-        'template_id',
+        'eo_id',
+
         'title',
-        'date',
         'category',
-        'location',
+        'organizer_name',
+        'organizer_unit',
         'description',
-        'dresscode',
+
+        'date',
+        'start_time',
+        'end_time',
+
+        'location_type',
+        'location',
+        'meeting_link',
+
+        'dress_code',
+        'notes',
+
+        'invitation_type',
+
+        'pic_name',
+        'pic_whatsapp',
+        'pic_email',
+        'request_notes',
+
         'status',
-        'token',
+        'approved_at',
+        'approved_by',
     ];
 
-    /**
-     * Auto-generate token saat create
-     */
-    protected static function boot()
-    {
-        parent::boot();
+    /*
+    |--------------------------------------------------------------------------
+    | RELATIONS
+    |--------------------------------------------------------------------------
+    */
 
-        static::creating(function ($event) {
-            if (empty($event->token)) {
-                $event->token = Str::uuid();
-            }
-        });
+    // EO pembuat event
+    public function eo()
+    {
+        return $this->belongsTo(User::class, 'eo_id');
     }
 
-    /**
-     * EO / User pembuat event
-     */
-    public function user()
+    // Admin yang approve
+    public function approver()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'approved_by');
     }
 
-    /**
-     * Template undangan
-     */
-    public function template()
+    // Daftar tamu undangan
+    public function guests()
     {
-        return $this->belongsTo(Template::class);
+        return $this->hasMany(EventGuest::class);
     }
 
-    /**
-     * Daftar penerima undangan
-     */
-    public function recipients()
+    /*
+    |--------------------------------------------------------------------------
+    | HELPERS
+    |--------------------------------------------------------------------------
+    */
+
+    public function isApproved(): bool
     {
-        return $this->hasMany(Recipient::class);
+        return $this->status === 'approved';
     }
 }
