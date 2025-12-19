@@ -11,9 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('events', function (Blueprint $table) {
-            $table->uuid('token')->nullable()->after('status');
-        });
+        // Cek apakah kolom 'token' sudah ada di tabel 'events'
+        if (!Schema::hasColumn('events', 'token')) {
+            Schema::table('events', function (Blueprint $table) {
+                $table->uuid('token')->nullable()->after('status');
+            });
+        }
     }
 
     /**
@@ -21,8 +24,10 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('events', function (Blueprint $table) {
-            $table->dropColumn('token');
-        });
+        if (Schema::hasColumn('events', 'token')) {
+            Schema::table('events', function (Blueprint $table) {
+                $table->dropColumn('token');
+            });
+        }
     }
 };
