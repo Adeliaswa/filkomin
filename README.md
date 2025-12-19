@@ -7,12 +7,32 @@
 Untuk memudahkan pengujian, gunakan akun berikut:
 
 ### **👤 Login sebagai Event Organizer**
-* Email: eo@filkom.ac.id
-* Password: password
+#### 1. **Login sebagai Dosen**
+* Email: dosen@filkom.ac.id
+#### 2. **Login sebagai DPM**
+* Email: dpm@filkom.ac.id
+#### 3. **Login sebagai BEM**
+* Email: bem@filkom.ac.id
+#### 4. **Login sebagai POROS**
+* Email: poros@filkom.ac.id
+#### 5. **Login sebagai BCC**
+* Email: bcc@filkom.ac.id
+#### 6. **Login sebagai KEPANITIAAN**
+* Email: kepanitiaan@filkom.ac.id
+
+`Catatan: Seluruh akun Event Organizer menggunakan password yang sama, yaitu password, dan disediakan khusus untuk keperluan demo dan pengujian sistem.`
   
 ### **🛠️ Login sebagai Admin**
+#### 1. **Login sebagai Phia**
 * Email: admin@filkom.ac.id
-* Password: password
+#### 2. **Login sebagai Ael**
+* Email: admin2@filkom.ac.id
+#### 3. **Login sebagai Yupi**
+* Email: admin3@filkom.ac.id
+
+`Catatan: Seluruh akun Admin menggunakan password yang sama, yaitu password, dan disediakan khusus untuk keperluan demo dan pengujian sistem.`
+
+---
 
 ## **Fitur Utama**
 
@@ -36,7 +56,7 @@ Untuk memudahkan pengujian, gunakan akun berikut:
 
 ### 1. **Akses Undangan Digital**
 
-* Tamu dapat mengakses undangan melalui **link undangan** atau QR Code tanpa perlu login.
+* Tamu dapat menerima undangan secara otomatis melalui WhatsApp dalam bentuk link atau file PDF.
 * Informasi yang ditampilkan meliputi detail acara, lokasi, waktu, dan dresscode.
 
 ### 2. **RSVP (Konfirmasi Kehadiran)**
@@ -44,10 +64,12 @@ Untuk memudahkan pengujian, gunakan akun berikut:
 * Tamu dapat mengonfirmasi kehadiran **(hadir/ tidak hadir)** langsung dari halaman undangan.
 * Data RSVP tersimpan otomatis dan dapat dipantau oleh admin/EO.
 
-### 3. **QR Code Check-In**
+### 3. **QR Code Akses Undangan**
 
-* Setiap tamu memiliki **QR Code unik** yang digunakan saat check-in di lokasi acara.
-* QR akan dipindai oleh panitia untuk mencatat kehadiran secara real-time dan mencegah check-in ganda.
+* Setiap tamu undangan memiliki **QR Code unik** yang terhubung langsung ke halaman undangan digital.
+* QR Code berfungsi sebagai media akses cepat ke undangan tanpa memerlukan proses login.
+* Melalui halaman undangan tersebut, tamu dapat melihat detail acara serta melakukan konfirmasi kehadiran (RSVP).
+* Fitur ini mempermudah distribusi undangan dan meningkatkan aksesibilitas informasi acara.
 
 ---
 
@@ -195,18 +217,18 @@ Kontribusi sangat terbuka! Silakan ikuti langkah-langkah berikut untuk berkontri
 2. **Buat branch baru**:
 
    ```bash
-   git checkout -b fitur-checkin-undangan
+   git checkout -b fitur-qr-undangan
    ```
 3. **Buat perubahan**: Lakukan perubahan sesuai dengan fitur atau bug yang ingin Anda selesaikan.
 4. **Commit perubahan**: Gunakan pesan commit yang sesuai dengan format **Conventional Commit**:
 
    ```bash
-   git commit -m "feat(checkin): tambah fitur qr code"
+   git commit -m "feat(qr): tambah qr code akses undangan"
    ```
 5. **Push ke repository**:
 
    ```bash
-   git push origin fitur-checkin-undangan
+   git push origin fitur-qr-undangan
    ```
 6. **Buat Pull Request**: Buat pull request di GitHub untuk menggabungkan perubahan ke branch utama.
 
